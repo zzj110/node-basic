@@ -1,0 +1,102 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <mate charset="utf-8" />
+    <title>server</title>
+    <!-- 不支持../路径 ./路径 -->
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <label for="username">用户名</label>
+                <input type="text" id="username">
+            </div>
+            <div class="col-md-5">
+                <label for="password">密码</label>
+                <input type="text" id="password">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary btn-sm add">添加</button>
+            </div>
+            <div class="col-md-12">
+                <ul class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            let oUl = document.querySelector('.list-group'); //没有dom映射
+            let username = document.getElementById('username');
+            let password = document.getElementById('password');
+            let add = document.querySelector('.add');
+            let template = function(username, password, id) {
+                return `<li class="list-group-item clearfix">
+                    用户名：${username} 密码：${password}
+                    <button class="btn btn-danger btn-sm pull-right" data-id=${id}>删除</button>
+                </li>`;
+            }
+
+            function render(data) {
+                let str = '';
+                data.forEach(item => {
+                    str += template(item.username, item.password, item.id);
+                });
+                oUl.innerHTML = str;
+            }
+            fetch('/user').then(res => {
+                return res.json()
+            }).then(data => {
+                console.log(data);
+                render(data);
+
+            }).catch(err => {
+                console.log(err)
+            });
+            add.addEventListener('click', function() {
+                console.log("sdfsd")
+                fetch('/user', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: username.value,
+                        password: password.value
+                    })
+                }).then(res => {
+                    return res.json()
+                }).then(data => {
+                    // 在内存中创建一个div
+                    let oDiv = document.createElement('div');
+                    // 创建一个li
+                    oDiv.innerHTML = template(data.username, data.password, data.id);
+                    // 将li添加到ul中
+                    oUl.appendChild(oDiv.firstElementChild);
+                }).catch(err => {
+                    console.log(err)
+                })
+            }, false);
+            oUl.addEventListener('click', function(e) {
+                if (e.target.tagName == 'BUTTON') {
+                    let id = e.target.dataset.id;
+                    fetch(`/user?id=${id}`, {
+                        method: 'DELETE'
+                    }).then(res => {
+                        return res.json()
+                    }).then(data => {
+                        console.log('sdas')
+                        oUl.removeChild(e.target.parentNode);
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+
+            }, false)
+
+        })()
+    </script>
+</body>
+
+</html>
