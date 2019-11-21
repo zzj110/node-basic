@@ -9,6 +9,8 @@ let users = [{ id: 1, username: 'zz1你', password: 'admin' }, { id: 2, username
 http.createServer((req, res) => { // 监听函数 当前请求到来时会执行回调函数
     let { pathname, query } = url.parse(req.url, true);
     let id = query.id; // 查询参数中是否有值
+    console.log(req.method); // method方法 全部大写
+    console.log(req.headers); //获取请求头 全部小写
     if (pathname == '/user') {
         res.setHeader('Content-Type', 'application/json;charset=utf8');
         switch (req.method) {

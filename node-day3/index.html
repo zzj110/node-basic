@@ -2,12 +2,36 @@
 <html lang="en">
 
 <head>
-    <mate charset="UTF-8" />
+    <mate charset="utf-8" />
     <title>server</title>
+    <!-- 不支持../路径 ./路径 -->
+    <link href="index.css" rel="stylesheet">
 </head>
 
 <body>
-    hello
+    <div id="clock"></div>
+    <script>
+        // fetch 基于Promise
+        fetch('/clock', {
+            method: 'get'
+        }).then(function(res) {
+            return res.json();
+        }).then(function(data) {
+            clock.innerHTML = data.time;
+            console.log(data);
+        })
+        setInterval(() => {
+            let clock = document.getElementById('clock');
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', '/clock', true); // true是异步
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    clock.innerHTML = xhr.response
+                }
+            }
+            xhr.send();
+        }, 1000)
+    </script>
 </body>
 
 </html>
