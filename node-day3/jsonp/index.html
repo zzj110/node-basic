@@ -1,0 +1,23 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <mate charset="utf-8" />
+    <title>server</title>
+
+</head>
+
+<body>
+    <script>
+        // 全局函数
+        function cb(data) {
+            console.log(data)
+        }
+        let oScript = document.createElement('script');
+        oScript.src = 'http://localhost:3000/jsonp?cb=cb';
+        document.body.appendChild(oScript);
+    </script>
+    <!-- <script src="http://localhost:3000/jsonp?cb=cb"></script> -->
+</body>
+
+</html>
