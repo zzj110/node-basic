@@ -1,0 +1,25 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <mate charset="utf-8" />
+    <title>route</title>
+</head>
+
+<body>
+    <%include ../header.ejs%>
+        <h1>
+            <%=username%>
+        </h1>
+        <h1>
+            <%=password%>
+        </h1>
+        <%arr.forEach(item=>{%>
+            <li>
+                <%=item%>
+            </li>
+            <%})%>
+                <%-html%>
+</body>
+
+</html>
