@@ -41,3 +41,46 @@ req.path   pathname路径
 - res.sendFile() 绝对路径 path.join/path.resolve()
 - res.sendStatus()
 - res.send()
+
+## 路由拆分
+```
+let express=require('express');
+let app=express();
+let router=express.Router();
+router.get('/login',fn);
+app.use('/user',router);
+```
+
+## bodyParser
+```
+app.use(bodyParser.json()); // 解析json
+// 解析表单  application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:true}));
+```
+
+## ejs (前后端分离不使用ejs)
+```
+app.set('view engine','html');// 更改默认后缀名
+app.set('views','static'); // 更改路径
+app.engine('html',require('ejs').__express); //html用ejs模板渲染
+res.render('index',渲染数据)
+```
+## ejs用法
+```
+<%include '文件名'%> //引用
+<%=变量%>  // 取值
+<%-转译变量 %>  
+<%for(let i=0;1<10;i++){%>
+  <li><%=i%></li>
+<%}%>
+```
+
+## 静态服务中间件
+```
+app.use(express.static('文件夹'))
+```
+
+## 重定向
+```
+res.redirect('路径')
+```
